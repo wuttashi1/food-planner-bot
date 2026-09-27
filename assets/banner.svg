@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="360" viewBox="0 0 1280 360">
+<rect width="1280" height="360" rx="24" fill="#0d1117"/>
+<circle cx="1150" cy="50" r="240" fill="#56d6a0" opacity=".10"/>
+<circle cx="1150" cy="50" r="170" fill="none" stroke="#56d6a0" stroke-width="2" opacity=".4"/>
+<path d="M70 80h60" stroke="#56d6a0" stroke-width="6"/>
+<text x="70" y="130" fill="#56d6a0" font-family="Arial,sans-serif" font-size="18" letter-spacing="5">WUTSHY / BOT COLLECTION</text>
+<text x="66" y="220" fill="#f0f6fc" font-family="Arial,sans-serif" font-size="68" font-weight="700">Food Planner</text>
+<text x="70" y="278" fill="#a8b3c2" font-family="Arial,sans-serif" font-size="24">Plan meals. Share groceries. Stay consistent.</text>
+</svg>

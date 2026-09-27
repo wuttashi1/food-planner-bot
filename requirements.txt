@@ -1,0 +1,11 @@
+aiogram>=3.20,<4
+SQLAlchemy[asyncio]>=2.0.40,<2.1
+aiosqlite>=0.21,<1
+alembic>=1.15,<2
+openpyxl>=3.1.5,<4
+pydantic>=2.10,<3
+pydantic-settings>=2.8,<3
+python-dotenv>=1,<2
+structlog>=25,<26
+defusedxml>=0.7,<1
+tzdata>=2025.2

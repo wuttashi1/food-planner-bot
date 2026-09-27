@@ -1,0 +1,15 @@
+name: test
+on: [push, pull_request]
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.lock -r requirements-dev.txt
+      - run: ruff check app tests scripts main.py
+      - run: pytest -q
+      - run: alembic upgrade head && alembic check && python main.py --check
+      - run: cp .env.example .env && docker compose config --quiet && docker compose build
