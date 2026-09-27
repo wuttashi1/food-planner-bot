@@ -15,12 +15,15 @@ FILES = [
     ".gitignore",
     ".dockerignore",
     "README.md",
+    "README.ru.md",
+    "GUIDE.ru.md",
+    ".gitattributes",
     "alembic.ini",
     "pyproject.toml",
     "data/.gitkeep",
     "logs/.gitkeep",
 ]
-FOLDERS = ["app", "tests", "migrations", "scripts", ".github"]
+FOLDERS = ["app", "tests", "migrations", "scripts", ".github", "assets"]
 
 
 def package(destination=None):
