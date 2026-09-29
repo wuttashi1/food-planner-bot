@@ -7,6 +7,7 @@ from app.config import Settings
 from app.database.session import database
 from app.bot.middleware import SessionMiddleware
 from app.bot.handlers.actions import router
+from app.bot.handlers.ai import router as ai_router
 from app.bot.commands import register
 from app.scheduler.worker import worker
 from app.logging_config import configure
@@ -33,6 +34,7 @@ async def main(check=False):
         middleware = SessionMiddleware(sessions, settings)
         dispatcher.message.outer_middleware(middleware)
         dispatcher.callback_query.outer_middleware(middleware)
+        dispatcher.include_router(ai_router)
         dispatcher.include_router(router)
         await register(bot)
         task = asyncio.create_task(worker(sessions, bot, settings, stop, middleware.lock))

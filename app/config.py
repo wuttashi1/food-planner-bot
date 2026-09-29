@@ -6,6 +6,14 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    openrouter_api_key: SecretStr = SecretStr("")
+    openrouter_model: str = "openrouter/free"
+    openrouter_base_url: str = "https://openrouter.ai/api/v1"
+    openrouter_timeout_seconds: int = Field(default=60, ge=1, le=180)
+    openrouter_http_referer: str = ""
+    openrouter_app_name: str = "Food Planner"
+    ai_user_daily_limit: int = Field(default=5, ge=1)
+    ai_user_cooldown_seconds: int = Field(default=60, ge=0)
     bot_token: SecretStr = SecretStr("")
     admin_ids: str = ""
     database_url: str = "sqlite+aiosqlite:///data/database/food_planner.db"

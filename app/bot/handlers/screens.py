@@ -5,6 +5,8 @@ from app.database.models import User, Household, Member, Menu, MenuVersion, Meal
 from app.services import planner
 from app.services.domain import DAY_RU, MEALS, quantity
 from app.services.excel import GPT_PROMPT
+from app.i18n import t
+from aiogram.types import InlineKeyboardButton
 from app.bot.ui import keyboard, button as b, pages, totals, meal_label
 
 
@@ -439,4 +441,10 @@ async def show(message, session, user, screen="home", ident=0, page=0, day="", s
     chunks = [text[i : i + 3800] for i in range(0, len(text), 3800)] or ["Пока пусто."]
     for chunk in chunks[:-1]:
         await message.answer(chunk)
-    await message.answer(chunks[-1], reply_markup=keyboard(rows, hid))
+    markup = keyboard(rows, hid)
+    locale = user.settings.get("locale", "en")
+    if screen == "home":
+        markup.inline_keyboard.insert(0, [InlineKeyboardButton(text=t("menu", locale), callback_data="ai:menu")])
+    if screen == "settings":
+        markup.inline_keyboard.insert(0, [InlineKeyboardButton(text=t("language", locale), callback_data="ai:language")])
+    await message.answer(chunks[-1], reply_markup=markup)

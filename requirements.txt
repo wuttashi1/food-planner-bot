@@ -9,3 +9,4 @@ python-dotenv>=1,<2
 structlog>=25,<26
 defusedxml>=0.7,<1
 tzdata>=2025.2
+aiohttp>=3.11,<4

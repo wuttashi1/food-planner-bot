@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import datetime, timezone, date
 from sqlalchemy import BigInteger, Boolean, Date, DateTime, ForeignKey, Integer, JSON, String, Text, UniqueConstraint, CheckConstraint
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -221,3 +223,22 @@ class MenuCopy(Base):
     publication_id: Mapped[int] = mapped_column(ForeignKey("menu_publications.id"), primary_key=True)
     household_id: Mapped[int] = mapped_column(ForeignKey("households.id", ondelete="CASCADE"), primary_key=True)
     menu_id: Mapped[int | None] = mapped_column(ForeignKey("menus.id", ondelete="SET NULL"), nullable=True)
+
+
+class AIUsage(Base):
+    __tablename__ = "ai_usage"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), index=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=utcnow)
+    model: Mapped[str] = mapped_column(String(128))
+    status: Mapped[str] = mapped_column(String(24))
+    days: Mapped[int]
+    error_code: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    duration_ms: Mapped[int | None] = mapped_column(Integer, nullable=True)
+
+
+class IngredientAlias(Base):
+    __tablename__ = "ingredient_aliases"
+    ingredient_id: Mapped[int] = mapped_column(ForeignKey("ingredients.id", ondelete="CASCADE"), primary_key=True)
+    locale: Mapped[str] = mapped_column(String(2), primary_key=True)
+    alias: Mapped[str] = mapped_column(String(128), primary_key=True)

@@ -15,6 +15,7 @@ FILES = [
     ".gitignore",
     ".dockerignore",
     "README.md",
+    "CHANGELOG.md",
     "README.ru.md",
     "GUIDE.ru.md",
     ".gitattributes",

@@ -109,7 +109,7 @@ async def download(message, session, user, action):
         if not menu:
             raise ValueError("Активное меню отсутствует. Сначала загрузите меню или демо.")
         data, _ = await planner.load_data(session, menu.active_version_id)
-        data.settings = user.settings
+        data.settings = {k: v for k, v in user.settings.items() if k not in {"locale", "ai_preferences"}}
         data.notifications = [
             NoticeData(
                 notification_type=n.kind,

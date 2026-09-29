@@ -5,6 +5,7 @@ from aiogram.types import Message, CallbackQuery
 from sqlalchemy.exc import SQLAlchemyError
 from pydantic import ValidationError
 from app.services.planner import ensure_user
+from app.i18n import locale_for
 import structlog
 
 
@@ -30,10 +31,27 @@ class SessionMiddleware(BaseMiddleware):
         self.last[user.id] = now
         if len(self.last) > 10000:
             self.last = {k: v for k, v in self.last.items() if now - v < 60}
+        current_state = await data["state"].get_state() if data.get("state") else None
+        is_ai = (isinstance(event, CallbackQuery) and (event.data or "").startswith("ai:")) or (
+            isinstance(event, Message)
+            and (
+                (event.text or "").split(" ")[0].split("@")[0] == "/ai"
+                or ((current_state or "").startswith("AIWizard:") and not (event.text or "").startswith("/"))
+            )
+        )
+        if is_ai:
+            async with self.lock, self.sessions() as session, session.begin():
+                db_user = await ensure_user(session, user.id, user.first_name, self.settings.timezone)
+                if "locale" not in db_user.settings:
+                    db_user.settings = db_user.settings | {"locale": locale_for(user.language_code)}
+            data.update(user=db_user, settings=self.settings, sessions=self.sessions, db_lock=self.lock)
+            return await handler(event, data)
         try:
             async with self.lock, self.sessions() as session:
                 async with session.begin():
                     db_user = await ensure_user(session, user.id, user.first_name, self.settings.timezone)
+                    if "locale" not in db_user.settings:
+                        db_user.settings = db_user.settings | {"locale": locale_for(user.language_code)}
                     data.update(session=session, user=db_user, settings=self.settings)
                     return await handler(event, data)
         except (ValueError, ValidationError) as exc:

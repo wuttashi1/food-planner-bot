@@ -1,6 +1,7 @@
 from aiogram.types import BotCommand
 
 COMMAND_DESCRIPTIONS = {
+    "ai": "✨ AI Menu",
     "start": "👋 Начало работы",
     "menu": "🏠 Главная",
     "menus": "📋 Мои меню",
